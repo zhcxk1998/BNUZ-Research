@@ -1,16 +1,17 @@
 {
-  "presets": [
-    "env",
-    "react",
-    "stage-0"
-  ],
+  "presets": ["@babel/preset-env", "@babel/preset-react", "mobx"],
   "plugins": [
-    ["transform-runtime", {
-      "helpers": false, //建议为false
-      "polyfill": false, //是否开始polyfill，根据网站兼容性决定是否开启
-      "regenerator": true 
+    "@babel/plugin-transform-runtime",
+    "react-hot-loader/babel",
+    "transform-decorators-legacy",
+    "@babel/plugin-proposal-object-rest-spread",
+    ["@babel/plugin-proposal-decorators", {
+      "legacy": true
     }],
-    "react-hot-loader/babel",     //react热更新插件
-    "transform-decorators-legacy", //修饰符语法转换插件
+    ["import", {
+      "libraryName": "antd",
+      "libraryDirectory": "es",
+      "style": "css"
+    }]
   ]
 }
