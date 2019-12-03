@@ -2,6 +2,8 @@ const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const tsImportPluginFactory = require('ts-import-plugin')
+
 const devMode = process.env.NODE_ENV !== 'production'
 module.exports = {
   entry: path.join(__dirname, '../src/index.tsx'),
@@ -19,8 +21,26 @@ module.exports = {
     extensions: ['.js', '.jsx', 'json', '.ts', '.tsx']
   },
   module: {
-    rules: [
-      {
+    rules: [{
+        test: /\.(jsx|tsx|js|ts)$/,
+        loader: 'ts-loader',
+        options: {
+          transpileOnly: true,
+          getCustomTransformers: () => ({
+            before: [tsImportPluginFactory(
+              {
+                libraryName: 'antd',
+                libraryDirectory: 'es',
+                style: "css"
+              }
+            )]
+          }),
+          compilerOptions: {
+            module: 'es2015'
+          }
+        },
+        exclude: /node_modules/
+      },{
         test: /\.(sa|sc|c)ss$/,
         use: [
           devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
@@ -41,28 +61,12 @@ module.exports = {
             options: { minimize: true },
           },
         ],
-      }, {
-        test: /\.js?$/,
-        use: [
-          {
-            loader: 'babel-loader'
-          }
-        ],
-        exclude: /node_modules/,
-      }, {
-        test: /\.tsx?$/,
-        use: [
-          {
-            loader: 'ts-loader'
-          }
-        ],
-        exclude: /node_modules/,
-      }, {
-        test: /\.(png|jpg|gif|jpeg|svg)/,  //是匹配图片文件后缀名称
+      },{
+        test: /\.(png|jpg|gif|jpeg|svg)/,
         use: [{
-          loader: 'url-loader', //是指定使用的loader和loader的配置参数
+          loader: 'url-loader',
           options: {
-            limit: 500,  //是把小于500B的文件打成Base64的格式，写入JS
+            limit: 500,
             outputPath: 'images/',
           }
         }]
@@ -71,11 +75,11 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, '../dist'),
-    filename: devMode ? '[name].[hash:8].js' : '[name].[chunkhash:8].js',       //数字8表示取hash标识符的前八位
-    chunkFilename: devMode ? '[name].[hash:8].js' : '[name].[chunkhash:8].js',  //异步模块的文件输出名
+    filename: devMode ? '[name].[hash:8].js' : '[name].[chunkhash:8].js',
+    chunkFilename: devMode ? '[name].[hash:8].js' : '[name].[chunkhash:8].js',
   },
   optimization: {
-    runtimeChunk: 'single',        //分离webpack运行时的引导代码
+    runtimeChunk: 'single',
     splitChunks: {
       chunks: 'all',
       cacheGroups: {
