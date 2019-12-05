@@ -1,21 +1,18 @@
-import React, { Component } from 'react'
-import { Button } from 'antd'
-import { observer, inject } from 'mobx-react'
+import React, { Component, ComponentType } from 'react'
 
-import Test from '../../store/test'
+import Header from '../../components/Header'
+import Content from '../../components/Content'
+import Footer from '../../components/Footer'
 
 import './index.scss'
 
 interface IProps {
-  Test: Test
 }
 
 interface IStates {
 
 }
 
-@inject('Test')
-@observer
 class Index extends Component<IProps, IStates>{
   constructor(props: any) {
     super(props);
@@ -25,14 +22,14 @@ class Index extends Component<IProps, IStates>{
   }
 
   render() {
-    const { Test: { count, increment } } = this.props
-
     return (
-      <div>
-        <Button onClick={() => { increment() }}>{count}</Button>
+      <div className="index__container">
+        <Header />
+        <Content />
+        <Footer />
       </div>
     )
   }
 }
 
-export default Index as React.ComponentType
+export default Index as ComponentType
