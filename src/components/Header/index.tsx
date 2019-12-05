@@ -20,7 +20,7 @@ export default class Header extends Component<IProps, IStates>{
     }
   }
 
-  handleLinkClick = (currentPageIndex: number): void => {
+  handleLinkClick(currentPageIndex: number): void {
     this.setState({
       currentPageIndex
     })
@@ -51,8 +51,8 @@ export default class Header extends Component<IProps, IStates>{
             {linkList.map((item, index) => {
               const { icon, name, link } = item
               return (
-                <div className="link__wrap" onClick={() => { this.handleLinkClick(index) }}>
-                  <Link className={`link__item ${index === currentPageIndex && 'link__item--active'}`} to={link} key={index}>
+                <div className="link__wrap" onClick={() => this.handleLinkClick(index)} key={index}>
+                  <Link className={`link__item ${index === currentPageIndex && 'link__item--active'}`} to={link}>
                     {icon && <Icon className="link__icon" type={icon} />}
                     {name}
                   </Link>
