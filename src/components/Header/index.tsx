@@ -42,6 +42,7 @@ export default class Header extends Component<IProps, IStates>{
     }, {
       name: '关于我们', link: '#'
     }]
+    const { currentPageIndex } = this.state
     return (
       <div className="header__container">
         <div className="header__wrap">
@@ -51,7 +52,7 @@ export default class Header extends Component<IProps, IStates>{
               const { icon, name, link } = item
               return (
                 <div className="link__wrap" onClick={() => { this.handleLinkClick(index) }}>
-                  <Link className="link__item" to={link} key={index}>
+                  <Link className={`link__item ${index === currentPageIndex && 'link__item--active'}`} to={link} key={index}>
                     {icon && <Icon className="link__icon" type={icon} />}
                     {name}
                   </Link>
