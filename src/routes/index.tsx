@@ -5,16 +5,16 @@ import {
 
 import PrivateRoute from '../components/PrivateRoute'
 import { Login, Register } from '../pages'
-import Index from '../pages/Index/index'
+import Main from '../components/Main/index'
 
 const Routes = () => (
   <Switch>
     <Route exact path="/login" component={Login} />
     <Route exact path="/register" component={Register} />
 
-    <PrivateRoute component={Index} path="/index" />
+    <PrivateRoute component={Main} path="/home" />
 
-    <Redirect exact from="/" to="/index" />
+    <Redirect exact from="/" to="/home" />
   </Switch>
 )
 
