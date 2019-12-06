@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { Icon } from 'antd'
-import { Link } from 'react-router-dom'
+import { Link, withRouter, RouteComponentProps } from 'react-router-dom'
 
 import './index.scss'
 
-interface IProps {
+interface IProps extends RouteComponentProps {
 
 }
 
@@ -12,7 +12,23 @@ interface IStates {
   currentPageIndex: number
 }
 
-export default class Header extends Component<IProps, IStates>{
+const linkList: Array<{ icon?: string, name: string, link: string }> = [{
+  icon: 'compass', name: '城市', link: '#'
+}, {
+  name: '首页', link: '/home/index'
+}, {
+  name: '课程', link: '/home/test'
+}, {
+  name: '圈子', link: '#'
+}, {
+  name: 'APP', link: '#'
+}, {
+  name: '资讯', link: '#'
+}, {
+  name: '关于我们', link: '#'
+}]
+
+class Header extends Component<IProps, IStates>{
   constructor(props: IProps) {
     super(props)
     this.state = {
@@ -20,28 +36,30 @@ export default class Header extends Component<IProps, IStates>{
     }
   }
 
-  handleLinkClick(currentPageIndex: number): void {
+  componentDidMount(): void {
+    const { location: { pathname } } = this.props
+    const currentLinkIndex: number = linkList.findIndex(({ link }) => link === pathname)
     this.setState({
-      currentPageIndex
+      currentPageIndex: currentLinkIndex
     })
   }
 
+  componentDidUpdate(preProps: IProps) {
+    const pathIsChanged: boolean = preProps.location.pathname !== this.props.location.pathname
+    if (pathIsChanged) {
+      const { location: { pathname } } = this.props
+      const currentLinkIndex: number = linkList.findIndex(({ link }) => link === pathname)
+      this.setState({
+        currentPageIndex: currentLinkIndex
+      })
+    }
+  }
+
+  handleLinkClick(currentPageIndex: number): void {
+    this.props.history.push(linkList[currentPageIndex].link)
+  }
+
   render() {
-    const linkList: Array<{ icon?: string, name: string, link: string }> = [{
-      icon: 'compass', name: '城市', link: '#'
-    }, {
-      name: '首页', link: '#'
-    }, {
-      name: '课程', link: '#'
-    }, {
-      name: '圈子', link: '#'
-    }, {
-      name: 'APP', link: '#'
-    }, {
-      name: '资讯', link: '#'
-    }, {
-      name: '关于我们', link: '#'
-    }]
     const { currentPageIndex } = this.state
     return (
       <div className="header__container">
@@ -70,3 +88,5 @@ export default class Header extends Component<IProps, IStates>{
     )
   }
 }
+
+export default withRouter(Header)
