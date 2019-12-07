@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
+import { withRouter, Switch, Redirect, RouteComponentProps, Route } from 'react-router-dom'
+import { Index } from '../../pages'
 
 import './index.scss'
-import { withRouter, Switch, Redirect, RouteComponentProps, Route } from 'react-router-dom'
-
-import { Index } from '../../pages'
 
 interface IProps extends RouteComponentProps {
 
