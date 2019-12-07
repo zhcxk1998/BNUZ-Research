@@ -1,8 +1,12 @@
 import React, { Component, ComponentType } from 'react'
 import { Icon } from 'antd'
 
+import './index.scss'
+
 interface IProps {
-  cityList: Array<number>
+  cityList: Array<number>,
+  row: number,
+  step: number
 }
 
 interface IStates {
@@ -22,8 +26,8 @@ class Slider extends Component<IProps, IStates> {
   }
 
   componentDidMount(): void {
-    const { cityList } = this.props
-    const cityWrapWidth: number = cityList.length > 12 ? Math.ceil(cityList.length / 2) * 220 : 1320
+    const { cityList, row } = this.props
+    const cityWrapWidth: number = cityList.length > 12 ? Math.ceil(cityList.length / row) * 220 : 1320
     const cityWrapDom: HTMLElement | null = document.getElementById('city__wrap') as HTMLElement
     const cityContainerDom: HTMLElement | null = document.getElementById('city__container') as HTMLElement
     const cityContainerWidth: number = cityContainerDom.offsetWidth
@@ -36,10 +40,11 @@ class Slider extends Component<IProps, IStates> {
   }
 
   handleArrowClick(direction: string): void {
+    const { step } = this.props
     const { cityContainerWidth, cityWrapWidth, cityWrapTranslateX } = this.state
     const cityWrapDom: HTMLElement | null = document.getElementById('city__wrap') as HTMLElement
     /* 步长 */
-    const translateStep: number = 440
+    const translateStep: number = 220 * step
     const translateDistance: number = translateStep * (direction === 'left' ? 1 : -1)
 
     let newTranslateX: number = cityWrapTranslateX
@@ -87,7 +92,7 @@ class Slider extends Component<IProps, IStates> {
     const { cityList } = this.props
     return (
       <div className="city" >
-        <div className="city__title">热门城市</div>
+        <div className="city__title">我是一个轮播图</div>
         <div className="city__container" id="city__container">
           <div className="city__arrow" onClick={() => this.handleArrowClick('left')}>
             <Icon className="icon" type="left" />

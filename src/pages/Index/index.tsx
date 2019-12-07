@@ -34,7 +34,7 @@ export default class Index extends Component<IProps, IStates>{
 
   getCityList(): Promise<Array<number>> {
     return new Promise(async (resolve, reject) => {
-      const length: number = 21
+      const length: number = 23
       const cityList: Array<number> = Array.from({ length }, (_: unknown, index: number): number => index + 1)
       resolve(cityList)
     })
@@ -84,7 +84,7 @@ export default class Index extends Component<IProps, IStates>{
 
               </div>
             </div>
-            {cityList.length !== 0 && <Slider cityList={cityList} />}
+            {cityList.length !== 0 && <Slider cityList={cityList} row={2} step={2} />}
           </div>
         </div>
       </div>
